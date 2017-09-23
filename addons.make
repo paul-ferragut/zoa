@@ -1,0 +1,8 @@
+ofxAutoReloadedShader
+ofxFX
+ofxGui
+ofxKinect
+ofxMPMFluid
+ofxOpenCv
+ofxSvg
+ofxXmlSettings

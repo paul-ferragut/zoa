@@ -1,0 +1,16 @@
+
+*.ipch
+*.db
+*.opendb
+*.obj
+*.filters
+*.tlog
+*.pdb
+*.log
+*.exp
+*.lib
+*.exe
+*.dll
+*.db-wal
+*.db-shm
+.vs/zoa/v15/.suo

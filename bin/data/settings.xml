@@ -1,0 +1,23 @@
+<group>
+	<Particles>10900</Particles>
+	<Density>5</Density>
+	<Stiffness>0.5</Stiffness>
+	<Bulk_Viscosity>3</Bulk_Viscosity>
+	<Elasticity>1</Elasticity>
+	<Viscosity>1</Viscosity>
+	<Yield_Rate>1</Yield_Rate>
+	<Gravity>0.0087</Gravity>
+	<Smoothing>0.705</Smoothing>
+	<Do_Obstacles1>0</Do_Obstacles1>
+	<Do_Obstacles2>0</Do_Obstacles2>
+	<Do_Obstacles3>0</Do_Obstacles3>
+	<Horizontal_Density_Gradient>1</Horizontal_Density_Gradient>
+	<Vertical_Sync>1</Vertical_Sync>
+	<debugKinect>0</debugKinect>
+	<nearThreshold>132</nearThreshold>
+	<farThreshold>104</farThreshold>
+	<blobSize1>6000</blobSize1>
+	<blobSize2>15000</blobSize2>
+<group/>
+<LINEWIDTH>1.61</LINEWIDTH>
+</group>

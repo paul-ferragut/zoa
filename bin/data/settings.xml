@@ -1,23 +1,33 @@
 <group>
-	<Particles>10900</Particles>
-	<Density>5</Density>
+	<Particles>35650</Particles>
+	<Density>6.15</Density>
 	<Stiffness>0.5</Stiffness>
 	<Bulk_Viscosity>3</Bulk_Viscosity>
-	<Elasticity>1</Elasticity>
-	<Viscosity>1</Viscosity>
+	<Elasticity>0.82</Elasticity>
+	<Viscosity>0.38</Viscosity>
 	<Yield_Rate>1</Yield_Rate>
-	<Gravity>0.0087</Gravity>
-	<Smoothing>0.705</Smoothing>
+	<Gravity>0.001</Gravity>
+	<Smoothing>0.6</Smoothing>
 	<Do_Obstacles1>0</Do_Obstacles1>
 	<Do_Obstacles2>0</Do_Obstacles2>
-	<Do_Obstacles3>0</Do_Obstacles3>
+	<Do_Obstacles3>1</Do_Obstacles3>
 	<Horizontal_Density_Gradient>1</Horizontal_Density_Gradient>
 	<Vertical_Sync>1</Vertical_Sync>
-	<debugKinect>0</debugKinect>
+	<debugKinect>1</debugKinect>
 	<nearThreshold>132</nearThreshold>
 	<farThreshold>104</farThreshold>
 	<blobSize1>6000</blobSize1>
 	<blobSize2>15000</blobSize2>
 <group/>
-<LINEWIDTH>1.61</LINEWIDTH>
+<LINEWIDTH>5.88</LINEWIDTH>
+<letter_repulsion>0.0945</letter_repulsion>
+	<letter_attraction>0.027</letter_attraction>
+	<scale_factor>10</scale_factor>
+<head>0</head>
+	<leftHand>0</leftHand>
+	<rightHand>0</rightHand>
+	<blobDensity>0.8</blobDensity>
+	<frequency>0.18</frequency>
+	<scalar>2.5</scalar>
+<scaleKinectPts>1.735</scaleKinectPts>
 </group>

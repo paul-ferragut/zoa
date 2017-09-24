@@ -6,9 +6,10 @@
 #include "ofxSvg.h"
 #include "ofxGui.h"  /* for the control panel */
 //#include "ofxVectorGraphics.h"    /* for PostScript output */
-#include "ofxOpenCv.h"
-#include "ofxKinect.h"
+
+//#include "ofxKinect.h"
 #include "ofxBlur.h"
+#include "ofxKinectCommonBridge.h"
 
 class ofApp : public ofBaseApp{
 
@@ -34,7 +35,7 @@ class ofApp : public ofBaseApp{
 
 		bool  bFullscreen;
 		bool  bShowControlPanel;
-		float scaleFactor;
+		ofxFloatSlider scaleFactor;
 		ofxPanel gui;
 		void setupControlPanel();
 		ofxFloatSlider N_PARTICLES;
@@ -51,30 +52,29 @@ class ofApp : public ofBaseApp{
 		ofxToggle DENSITY_GRADIENT;
 		ofxToggle VERTICAL_SYNC;
 
-		ofxToggle debugKinect;
+		ofxFloatSlider LETTER_REPULSION;
+		ofxFloatSlider LETTER_ATTRACTION;
 
-	//	ofxToggle bThreshWithOpenCV;
 		
-		ofxIntSlider nearThreshold;
-		ofxIntSlider farThreshold;
-
-		ofxCvGrayscaleImage grayImage; // grayscale depth image
-		ofxCvGrayscaleImage grayThreshNear; // the near thresholded image
-		ofxCvGrayscaleImage grayThreshFar; // the far thresholded image
-
-		ofxCvContourFinder contourFinder;
-
-		ofxIntSlider blobSize1;
-		ofxIntSlider blobSize2;
+		ofxToggle debugKinect;
 		vector < ofPoint>kinectPts;
 		vector < ofPoint>kinectPtsPrev;
-
-
-
-		ofxKinect kinect;
 
 		ofxBlur             blur;
 
 		ofFbo fbo;
 		
+		ofxKinectCommonBridge kinect;
+		ofVec3f head, lHand, rHand;
+		bool hasSkeleton;
+
+		ofxFloatSlider scaleKinectPts;
+		float jointDistance;
+		ofxFloatSlider p1, p2, p3, p4, p5, p6;
+
+		float scalePts;
+		//ofVec2f translatePts(0, (((ofGetHeight() / 2) - (480 / 2))/10)*scaleFactor);
+		//cout << scalePts << endl;
+		ofVec2f translatePts;
+
 };

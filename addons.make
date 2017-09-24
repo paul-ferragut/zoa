@@ -1,8 +1,7 @@
 ofxAutoReloadedShader
 ofxFX
 ofxGui
-ofxKinect
+ofxKinectCommonBridge
 ofxMPMFluid
-ofxOpenCv
 ofxSvg
 ofxXmlSettings

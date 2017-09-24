@@ -5,21 +5,14 @@ void ofApp::setup(){
 	ofSetWindowTitle("ZOA");
 	ofBackground(0, 0, 0);
 
-	kinect.setRegistration(true);
+	
+	kinect.initSensor( 0 );
 
-	kinect.init();
-	//kinect.init(true); // shows infrared instead of RGB video image
-	//kinect.init(false, false); // disable video image (faster fps)
+	kinect.initColorStream(640, 480);
+	kinect.initDepthStream(320, 240, true);
+	kinect.initSkeletonStream(true);
 
-	kinect.open();
-	//colorImg.allocate(kinect.width, kinect.height);
-	cout << kinect.width << " height" << kinect.height << endl;
-	grayImage.allocate(kinect.width, kinect.height);
-	grayThreshNear.allocate(kinect.width, kinect.height);
-	grayThreshFar.allocate(kinect.width, kinect.height);
-	// zero the tilt on startup
-	float angle = 0;
-	kinect.setCameraTiltAngle(angle);
+	kinect.start();
 	
 	bFullscreen = false;
 	bShowControlPanel = true;
@@ -39,13 +32,33 @@ void ofApp::setup(){
 		for (int i = 0; i < svg.getNumPath(); i++) {
 			ofPath p = svg.getPathAt(i);
 			// svg defaults to non zero winding which doesn't look so good as contours
-			p.setPolyWindingMode(OF_POLY_WINDING_ODD);
+			p.setPolyWindingMode(OF_POLY_WINDING_ODD);//MATTERS
 			vector<ofPolyline>& lines = const_cast<vector<ofPolyline>&>(p.getOutline());
 			for (int j = 0; j<(int)lines.size(); j++) {
 				outlines.push_back(lines[j]);
 			}
 		}
+	//	cout << "ADD OBSTACLES" << endl;
 		fluid.addObstacles(outlines, k);
+	}
+	
+	for (int k = 0; k < 3; k++) {
+		vector<ofPolyline> outlines;
+		ofxSVG svg;
+		svg.load("zoai" + ofToString(k + 1) + ".svg");
+
+
+		for (int i = 0; i < svg.getNumPath(); i++) {
+			ofPath p = svg.getPathAt(i);
+			// svg defaults to non zero winding which doesn't look so good as contours
+			p.setPolyWindingMode(OF_POLY_WINDING_ODD);//MATTERS
+			vector<ofPolyline>& lines = const_cast<vector<ofPolyline>&>(p.getOutline());
+			for (int j = 0; j<(int)lines.size(); j++) {
+				outlines.push_back(lines[j]);
+			}
+		}
+		//	cout << "ADD OBSTACLES" << endl;
+		fluid.addObstacles(outlines, k+3);
 	}
 	setupControlPanel();
 
@@ -77,62 +90,73 @@ void ofApp::update(){
 	fluid.smoothing = SMOOTHING;
 	fluid.lineWidth = LINEWIDTH;
 
+	fluid.letterAttract = LETTER_ATTRACTION;
+	fluid.letterRepel = LETTER_REPULSION;
+
 	fluid.scaleFactor = scaleFactor;
 
-	
 	kinect.update();
-
-	// there is a new frame and we are connected
-	if (kinect.isFrameNew()) {
-
-		// load grayscale depth image from the kinect source
-		grayImage.setFromPixels(kinect.getDepthPixels());
-
-		// we do two thresholds - one for the far plane and one for the near plane
-		// we then do a cvAnd to get the pixels which are a union of the two thresholds
-	
-			grayThreshNear = grayImage;
-			grayThreshFar = grayImage;
-			grayThreshNear.threshold(nearThreshold, true);
-			grayThreshFar.threshold(farThreshold);
-			cvAnd(grayThreshNear.getCvImage(), grayThreshFar.getCvImage(), grayImage.getCvImage(), NULL);
+		 scalePts =  ((((1080.0 / (640.0)))*scaleKinectPts) / 10)*scaleFactor;
+		 
+		 // 10.0)*scaleFactor
+		//ofVec2f translatePts(0, (((ofGetHeight() / 2) - (480 / 2))/10)*scaleFactor);
+		//cout << scalePts << endl;
+		 translatePts.set(((1080 / 2)-((640 * scalePts) / 2) ),  ((1920 / 2)- ((480 * scalePts) / 2)) );
 		
+	if (kinect.isNewSkeleton()) {
+
+//kinectPts.push_back((headBone.getScreenPosition()*scalePts)+ translatePts);
 
 
-		// update the cv images
-		grayImage.flagImageChanged();
-
-		// find contours which are between the size of 20 pixels and 1/3 the w*h pixels.
-		// also, find holes is set to true so we will get interior contours as well....
-		contourFinder.findContours(grayImage, 10, (kinect.width*kinect.height) / 2, 20, false);
-
-		float scaleBlob=2;
-		ofVec2f offSetBlob(0,500);
-		ofxCvBlob biggerBlob;
 		kinectPts.clear();
-		float area = 0;
-		for (int i = 0; i < contourFinder.blobs.size(); i++) {
-			if (contourFinder.blobs[i].area > area) {
-				//cout << "area" << contourFinder.blobs[i].area << endl;
-				biggerBlob = contourFinder.blobs[i];
-				area = contourFinder.blobs[i].area;
+		for (int i = 0; i < kinect.getSkeletons().size(); i++)
+		{
+
+			if (kinect.getSkeletons().at(i).find(NUI_SKELETON_POSITION_HEAD) != kinect.getSkeletons().at(i).end())
+			{
+
+				// just get the first one
+				SkeletonBone headBone = kinect.getSkeletons().at(i).find(NUI_SKELETON_POSITION_HEAD)->second;
+				SkeletonBone lHandBone = kinect.getSkeletons().at(i).find(NUI_SKELETON_POSITION_HAND_LEFT)->second;
+				SkeletonBone rHandBone = kinect.getSkeletons().at(i).find(NUI_SKELETON_POSITION_HAND_RIGHT)->second;
+				ofVec3f hb(headBone.getScreenPosition().x, headBone.getScreenPosition().y, 0);
+				head = head.getInterpolated(hb, 0.5);
+				head.z = ofInterpolateCosine(head.z, headBone.getStartPosition().x, 0.5) + 0.1;
+				ofVec3f lhb(lHandBone.getScreenPosition().x, lHandBone.getScreenPosition().y, 0);
+				lHand = lHand.getInterpolated(lhb, 0.5);
+				lHand.z = ofInterpolateCosine(lHand.z, lHandBone.getStartPosition().x, 0.5);
+				ofVec3f rhb(rHandBone.getScreenPosition().x, rHandBone.getScreenPosition().y, 0);
+				rHand = rHand.getInterpolated(rhb, 0.5);
+				rHand.z = ofInterpolateCosine(rHand.z, rHandBone.getStartPosition().x, 0.5);
+
+				//cout << headBone.getScreenPosition() << endl;
+				//cout << rHandBone.getScreenPosition() << endl;
+				//cout << lHandBone.getScreenPosition() << endl;
+
+				//ofVec2f translatePts(ofGetWidth())
+		kinectPts.push_back((rHandBone.getScreenPosition()*scalePts) + translatePts);
+				kinectPts.push_back((lHandBone.getScreenPosition()*scalePts)+ translatePts);
+				//cout << kinect.getSkeletons().at(i).find(NUI_SKELETON_POSITION_HEAD)->second.getScreenPosition() << endl;
+				//cout << kinect.getSkeletons().at(i).find(NUI_SKELETON_POSITION_HAND_LEFT)->second.getScreenPosition() << endl;
+				//cout << kinect.getSkeletons().at(i).find(NUI_SKELETON_POSITION_HAND_RIGHT)->second.getScreenPosition() << endl;
+
+				jointDistance = head.distance(rHand);
+				jointDistance += lHand.distance(rHand);
+				jointDistance += lHand.distance(head);
+
+				hasSkeleton = true;
+
+				//return;
 			}
 		}
-		if (biggerBlob.area > blobSize1) {
-			kinectPts.push_back(biggerBlob.centroid);
-		}
-		else if (biggerBlob.area > blobSize2) {
-			kinectPts.push_back((ofVec2f(biggerBlob.boundingRect.x, biggerBlob.centroid.y)*scaleBlob)+offSetBlob);
-			kinectPts.push_back((ofVec2f(biggerBlob.boundingRect.x+ biggerBlob.boundingRect.width, biggerBlob.centroid.y)*scaleBlob) + offSetBlob);
-		}
-		else {
-		
-		}
-
 	}
-	//kinectPts
 	
+	if (kinect.getSkeletons().size() <= 0) {
+	kinectPts.clear();
+	kinectPtsPrev.clear();
+	}
 	
+
 	
 	fluid.update(kinectPts, kinectPtsPrev);
 
@@ -147,25 +171,34 @@ void ofApp::draw(){
 	
 	
 
-	fbo.begin();
+	//fbo.begin();
 	//ofClear(255);
 	ofBackgroundGradient( ofColor(50, 50, 50),ofColor(0, 0, 0), OF_GRADIENT_CIRCULAR);
 	fluid.draw();
-	fbo.end();
-	blur.draw(0, 0);
+	//fbo.end();
+	//blur.draw(0, 0);
 
 
 	ofSetColor(255, 255, 255);
-	if (debugKinect) {
-		kinect.draw(420, 10, 400, 300);
-		kinect.drawDepth(10, 10, 400, 300);
-
-		grayImage.draw(10, 320, 400, 300);
-		contourFinder.draw(10, 320, 400, 300);
-		for (int i = 0; i < kinectPts.size(); i++) {
-			ofDrawCircle(kinectPts[i], 20);
+	
+	
+	if (debugKinect) {		
+		kinect.drawDepth(0, 0, 640, 480);
+		
+		for (int i = 0; i < kinect.getSkeletons().size(); i++)
+		{
+			kinect.drawSkeleton(i);
 		}
+		for (int i = 0; i < kinectPts.size(); i++)
+		{
+			ofDrawCircle(kinectPts[i],20);
+		}
+		ofNoFill();
+		ofDrawRectangle(0 + translatePts.x, 0 + translatePts.y, 640 * scalePts, 480 * scalePts);
+		ofFill();
+
 	}
+	
 	gui.draw();
 }
 
@@ -252,6 +285,12 @@ void ofApp::setupControlPanel() {
 	gui.add(GRAVITY.setup("Gravity", 0.002, 0, 0.02));
 	gui.add(SMOOTHING.setup("Smoothing", 1.0, 0, 3.0));
 
+
+	gui.add(LETTER_REPULSION.setup("letter repulsion", 0.12, 0.0, 0.3));
+	gui.add(LETTER_ATTRACTION.setup("letter attraction", 0.05,0.0, 0.3));
+
+	gui.add(scaleFactor.setup("scale factor", 6.4, 1, 10));
+
 	gui.add(DO_OBSTACLES[0].setup("Do Obstacles1", false));
 	gui.add(DO_OBSTACLES[1].setup("Do Obstacles2", false));
 	gui.add(DO_OBSTACLES[2].setup("Do Obstacles3", false));
@@ -264,14 +303,23 @@ void ofApp::setupControlPanel() {
 	gui.add(VERTICAL_SYNC.setup("Vertical Sync", true));
 
 	gui.add(LINEWIDTH.setup("LINEWIDTH", 1.0, 0, 7.0));
-
+	
 	gui.add(debugKinect.setup("debugKinect", false));
-	gui.add(nearThreshold.setup("nearThreshold", 0, 0,255));
-	gui.add(farThreshold.setup("farThreshold", 0, 0, 255));
+	// For an interesting experiment, try making Density proportional to the luminance of a photograph.
+	gui.add(scaleKinectPts.setup("scaleKinectPts", 1.0, 0.5, 7.0));
 
 
-	gui.add(blobSize1.setup("blobSize1", 0, 0, 150000));
-	gui.add(blobSize2.setup("blobSize2", 0, 0, 150000));
+	gui.add(p1.setup("head", 0.0, -1.0, 1.0));
+	gui.add(p2.setup("leftHand", 0.0, -1.0, 1.0));
+	gui.add(p3.setup("rightHand", 0.0, -1.0, 1.0));
+	gui.add(p4.setup("blobDensity", 0.8, 0.0, 2.0));
+	gui.add(p5.setup("frequency", 0.18, 0.0, 2.0));
+	gui.add(p6.setup("scalar", 2.5, -1.0, 3.0));
+
+	jointDistance = 1.f;
+
+
+	
 	gui.loadFromFile("settings.xml");
 }
 
@@ -279,8 +327,8 @@ void ofApp::setupControlPanel() {
 void ofApp::exit() {
 	
 	gui.saveToFile("settings.xml");
-	kinect.setCameraTiltAngle(0); // zero the tilt on exit
-	kinect.close();
+//	kinect.setCameraTiltAngle(0); // zero the tilt on exit
+//	kinect.close();
 
 	
 }

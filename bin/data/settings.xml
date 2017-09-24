@@ -1,33 +1,52 @@
 <group>
-	<Particles>35650</Particles>
-	<Density>6.15</Density>
-	<Stiffness>0.5</Stiffness>
-	<Bulk_Viscosity>3</Bulk_Viscosity>
-	<Elasticity>0.82</Elasticity>
-	<Viscosity>0.38</Viscosity>
+	<Particles>43570</Particles>
+	<Density>4.65</Density>
+	<Stiffness>0.45</Stiffness>
+	<Bulk_Viscosity>3.1</Bulk_Viscosity>
+	<Elasticity>1.18</Elasticity>
+	<Viscosity>1.16</Viscosity>
 	<Yield_Rate>1</Yield_Rate>
-	<Gravity>0.001</Gravity>
+	<Gravity>0.0028</Gravity>
 	<Smoothing>0.6</Smoothing>
 	<Do_Obstacles1>0</Do_Obstacles1>
 	<Do_Obstacles2>0</Do_Obstacles2>
 	<Do_Obstacles3>1</Do_Obstacles3>
 	<Horizontal_Density_Gradient>1</Horizontal_Density_Gradient>
-	<Vertical_Sync>1</Vertical_Sync>
-	<debugKinect>1</debugKinect>
+	<Vertical_Sync>0</Vertical_Sync>
+	<debugKinect>0</debugKinect>
 	<nearThreshold>132</nearThreshold>
 	<farThreshold>104</farThreshold>
 	<blobSize1>6000</blobSize1>
 	<blobSize2>15000</blobSize2>
 <group/>
-<LINEWIDTH>5.88</LINEWIDTH>
+<LINEWIDTH>1.225</LINEWIDTH>
 <letter_repulsion>0.0945</letter_repulsion>
 	<letter_attraction>0.027</letter_attraction>
-	<scale_factor>6.13</scale_factor>
+	<scale_factor>6.535</scale_factor>
 <head>0</head>
 	<leftHand>0</leftHand>
 	<rightHand>0</rightHand>
 	<blobDensity>0.8</blobDensity>
 	<frequency>0.18</frequency>
 	<scalar>2.5</scalar>
-<scaleKinectPts>0.76</scaleKinectPts>
+<scaleKinectPts>1.215</scaleKinectPts>
+<Bloom>0</Bloom>
+	<bloomIntensity>5</bloomIntensity>
+	<Blur>1</Blur>
+	<blurIntensity>3.9</blurIntensity>
+	<Bokeh>1</Bokeh>
+	<bokehIntensity>1.6</bokehIntensity>
+<Complexity1>1.17577</Complexity1>
+	<Complexity2>0.235765</Complexity2>
+	<Complexity3>4.075</Complexity3>
+	<Scale>1400</Scale>
+	<Speed>0.21</Speed>
+<fluidity_1>3.37532</fluidity_1>
+	<fluidity_2>0.125875</fluidity_2>
+	<fluidity_3>2.275</fluidity_3>
+	<speed>0.001694</speed>
+	<scale>1200</scale>
+<showNoiseDebug>0</showNoiseDebug>
+<delay>29</delay>
+	<autoSequence>1</autoSequence>
 </group>

@@ -2,6 +2,8 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+
+	//ofEnableDepthTest();
 	ofSetWindowTitle("ZOA");
 	ofBackground(0, 0, 0);
 
@@ -62,9 +64,48 @@ void ofApp::setup(){
 	}
 	setupControlPanel();
 
-	fbo.allocate(ofGetWidth(), ofGetHeight());
-	blur.allocate(ofGetWidth(), ofGetHeight());
-	blur.setPasses(10);
+	fbo.allocate(ofGetWidth(), ofGetHeight(),GL_RGBA,4);
+	bloom.allocate(ofGetWidth(), ofGetHeight());
+	bokeh.allocate(ofGetWidth(), ofGetHeight());
+	gaussianBlur.allocate(ofGetWidth(), ofGetHeight());
+	inverse.allocate(ofGetWidth(), ofGetHeight());
+
+
+	/*
+	pointLight.setDiffuseColor(ofColor(255.f, 255.f, 255.f));
+
+	// specular color, the highlight/shininess color //
+	pointLight.setSpecularColor(ofColor(255.f, 255.f, 200.f));
+	pointLight.setPosition(center.x, center.y, 0);
+
+	// shininess is a value between 0 - 128, 128 being the most shiny //
+	material.setShininess(64);
+	//colorHue = ofRandom(0, 250);
+
+	lightColor.setBrightness(255.f);
+	lightColor.setSaturation(0.f);
+
+	materialColor.setBrightness(255.f);
+	materialColor.setSaturation(00.f);
+	*/
+
+	shader.load("shader");
+	brushImage.loadImage("brush.png");
+	maskFbo.allocate(ofGetWidth(), ofGetHeight());
+	fboBg.allocate(ofGetWidth(), ofGetHeight());
+	fboNoise.allocate(ofGetWidth()/2, ofGetHeight()/2);
+
+	maskFbo.begin();
+	ofClear(0, 0, 0, 255);
+	maskFbo.end();
+
+	fboBg.begin();
+	ofClear(0, 0, 0, 255);
+	fboBg.end();
+
+	sequence = 0;
+	timerLimit = 0;
+	shaderNoise.load("noise");
 }
 
 //--------------------------------------------------------------
@@ -98,14 +139,10 @@ void ofApp::update(){
 	kinect.update();
 		 scalePts =  ((((1080.0 / (640.0)))*scaleKinectPts) / 10)*scaleFactor;
 		 
-		 // 10.0)*scaleFactor
-		//ofVec2f translatePts(0, (((ofGetHeight() / 2) - (480 / 2))/10)*scaleFactor);
-		//cout << scalePts << endl;
+
 		 translatePts.set( (((1080 / 10)*scaleFactor) / 2)-((640 * scalePts)/ 2) ,  (((1920 / 10)*scaleFactor) / 2)- ((480 * scalePts)/ 2) );
 		
 	if (kinect.isNewSkeleton()) {
-
-//kinectPts.push_back((headBone.getScreenPosition()*scalePts)+ translatePts);
 
 
 		kinectPts.clear();
@@ -133,12 +170,8 @@ void ofApp::update(){
 				//cout << rHandBone.getScreenPosition() << endl;
 				//cout << lHandBone.getScreenPosition() << endl;
 
-				//ofVec2f translatePts(ofGetWidth())
-		kinectPts.push_back((rHandBone.getScreenPosition()*scalePts) + translatePts);
+				kinectPts.push_back((rHandBone.getScreenPosition()*scalePts) + translatePts);
 				kinectPts.push_back((lHandBone.getScreenPosition()*scalePts)+ translatePts);
-				//cout << kinect.getSkeletons().at(i).find(NUI_SKELETON_POSITION_HEAD)->second.getScreenPosition() << endl;
-				//cout << kinect.getSkeletons().at(i).find(NUI_SKELETON_POSITION_HAND_LEFT)->second.getScreenPosition() << endl;
-				//cout << kinect.getSkeletons().at(i).find(NUI_SKELETON_POSITION_HAND_RIGHT)->second.getScreenPosition() << endl;
 
 				jointDistance = head.distance(rHand);
 				jointDistance += lHand.distance(rHand);
@@ -161,23 +194,258 @@ void ofApp::update(){
 	fluid.update(kinectPts, kinectPtsPrev);
 
 	kinectPtsPrev = kinectPts;
-	blur.setTexture(fbo.getTexture());
-	blur.update();
+
+
+	if (bloomB) {
+
+
+
+		bloom << fbo.getTexture();
+		//bloom.setPasses(bloomIntensity);
+		bloom.update();
+	}
+
+	if (bokehB) {
+		bokeh.setRadius(bokehIntensity);
+		
+		if (bloomB) {
+			bokeh << bloom;
+		}
+		else {
+		bokeh << fbo.getTexture();
+		}
+		
+		bokeh.update();
+	}
+	if (blurB) {
+		gaussianBlur.setRadius(blurIntensity);
+		gaussianBlur << bokeh;
+		gaussianBlur.update();
+	}
+
+
+
+	/*
+
+	colorHue += .1f;
+	if (colorHue >= 255) colorHue = 0.f;
+	lightColor.setHue(colorHue);
+
+
+	//pointLight.setDiffuseColor(lightColor);
+
+
+	materialColor.setHue(colorHue);
+	// the light highlight of the material //
+	material.setSpecularColor(materialColor);
+	*/
+	fboNoise.begin();
+	ofClear(0, 0, 0, 0);
+	shaderNoise.begin();
+	shaderNoise.setUniform1f("fluidity1", fluidity1);
+	shaderNoise.setUniform1f("fluidity2", fluidity2);
+	shaderNoise.setUniform1i("fluidity3", fluidity3);
+
+	shaderNoise.setUniform1f("scaleWidth", scale);
+	shaderNoise.setUniform1f("scaleHeight", scale);
+	shaderNoise.setUniform1f("time", ofGetFrameNum() *speed);
+	shaderNoise.setUniform1i("width", fboNoise.getWidth()); //* 10
+	shaderNoise.setUniform1i("height", fboNoise.getHeight()); //* 10
+
+	shaderNoise.setUniform1f("time", ofGetFrameNum() *speed);
+
+	ofDrawRectangle(0, 0, fboNoise.getWidth(), fboNoise.getHeight());
+
+	shaderNoise.end();
+	fboNoise.end();
+
+
+	if (autoSequence) {
+	//	cout << "ofGetFrameNum() - counterTimer" << ofGetFrameNum() - counterTimer << endl;	cout << "timerLimit" << timerLimit << endl;
+		if (ofGetFrameNum() - counterTimer >= timerLimit) {
+			sequence++;
+			//cout << "SEQUENCE" << sequence << endl;
+			if (sequence > 5) {
+				sequence = 0;
+			}
+			counterTimer = ofGetFrameNum();
+			DO_OBSTACLES[0] = false;
+			DO_OBSTACLES[1] = false;
+			DO_OBSTACLES[2] = false;
+			switch (sequence){
+			case EMPTY1:
+				timerLimit = ofRandom(delay * 5, delay * 7);
+				break;
+			case EMPTY2:
+				timerLimit = ofRandom(delay *0.4, delay *0.6);
+				break;
+			case EMPTY3:
+				timerLimit = ofRandom(delay *0.2, delay *0.3);
+				break;
+			case LOGO1:
+				//GRAVITY = 0.0028;
+				timerLimit = ofRandom(delay * 2, delay * 6);
+				DO_OBSTACLES[0] = true;
+				break;
+			case LOGO2:
+				timerLimit = ofRandom(delay * 1, delay * 1.5);
+				DO_OBSTACLES[1] = true;
+				break;
+			case LOGO3:
+				timerLimit = ofRandom(delay * 9, delay *12);
+				DO_OBSTACLES[2] = true;
+				break;
+			
+			}
+		
+		}
+	
+	
+	}
+	else {
+		counterTimer = ofGetFrameNum();
+	}
+	if (sequence == EMPTY1) {
+		//GRAVITY = GRAVITY+cos(ofGetElapsedTimeMillis()*0.0001)*0.002;//GET RESET ABOVE TO 0.0028
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
 
-	
-	
+	ofEnableAlphaBlending();
 
-	//fbo.begin();
+	maskFbo.begin();
+	ofClear(0, 0, 0, 0);
+	//int brushImageSize = 50;
+	//int brushImageX = mouseX - brushImageSize * 0.5;
+	//int brushImageY = mouseY - brushImageSize * 0.5;
+	//brushImage.draw(brushImageX, brushImageY, brushImageSize, brushImageSize);
+	fboNoise.draw(0, 0, ofGetWidth(),ofGetHeight());
+	maskFbo.end();
+
+
+	fboNoise.begin();
+	ofClear(0, 0, 0, 0);
+	shaderNoise.begin();
+	shaderNoise.setUniform1f("fluidity1", fluidity1);
+	shaderNoise.setUniform1f("fluidity2", fluidity2);
+	shaderNoise.setUniform1i("fluidity3", fluidity3);
+
+	shaderNoise.setUniform1f("scaleWidth", scale);
+	shaderNoise.setUniform1f("scaleHeight", scale);
+	shaderNoise.setUniform1f("time", ofGetFrameNum() *speed);
+	shaderNoise.setUniform1i("width", fboNoise.getWidth()); //* 10
+	shaderNoise.setUniform1i("height", fboNoise.getHeight()); //* 10
+
+	shaderNoise.setUniform1f("time", 1000+ofGetFrameNum() *speed);
+
+	ofDrawRectangle(0, 0, fboNoise.getWidth(), fboNoise.getHeight());
+
+	shaderNoise.end();
+	fboNoise.end();
+
+//	
 	//ofClear(255);
-	ofBackgroundGradient( ofColor(50, 50, 50),ofColor(0, 0, 0), OF_GRADIENT_CIRCULAR);
-	fluid.draw();
-	//fbo.end();
-	//blur.draw(0, 0);
+	/*
+	ofEnableDepthTest();
+	pointLight.setPosition(mouseX, mouseY, 200);
+	//ofBackgroundGradient(ofColor(50, 50, 50), ofColor(0, 0, 0), OF_GRADIENT_CIRCULAR);
+	
 
+	// enable lighting //
+	ofEnableLighting();
+	// the position of the light must be updated every frame, 
+	// call enable() so that it can update itself //
+	pointLight.enable();
+	material.begin();
+	lightColor.setBrightness(20.f);
+	ofDrawPlane(0, 0, -100, ofGetWidth()*4, ofGetHeight()*4);
+	lightColor.setBrightness(255.f);
+
+
+	material.end();
+	// turn off lighting //
+	ofDisableLighting();
+	*/
+//	
+	fbo.begin();
+	ofSetColor(0, 0, 0);
+	ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
+	ofSetColor(255, 5);
+	fboNoise.draw(0,0, ofGetWidth(), ofGetHeight());
+	ofSetColor(255,255);
+//	ofClearAlpha();
+	fluid.draw();
+
+	fbo.end();
+	//ofSetColor(255, 255, 255);
+
+
+
+
+	//fbo.draw(0,0);
+
+	fboBg.begin();
+	// Cleaning everthing with alpha mask on 0 in order to make it transparent by default
+	ofClear(0, 0, 0, 0);
+
+	shader.begin();
+	// here is where the fbo is passed to the shader
+	shader.setUniformTexture("maskTex", maskFbo.getTextureReference(), 1);
+	ofSetColor(255, 255, 255);
+	//fbo.draw(0, 0);
+	//ofSetColor(0, 0, 0);
+	//ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
+	//	ofClearAlpha();
+	if (blurB) {
+		gaussianBlur.draw();
+	}
+	else {
+		bokeh.draw();
+	}
+	
+
+	//ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
+	shader.end();
+	fboBg.end();
+
+
+	
+	//
+	if (bloomB) {
+		bloom.draw();
+	}
+	else {
+		fbo.draw(0,0);
+	}
+
+
+
+		fboBg.draw(0,0);
+
+	/*
+	ofDisableDepthTest();
+	if (bloomB) {
+
+		
+	}
+	if (blurB) {
+	
+		gaussianBlur.draw();
+		ofEnableAlphaBlending();
+		ofSetColor(255,50);
+		inverse.draw();
+		
+	}
+
+	if (bokehB) {
+
+		bokeh.draw();
+	}
+//	fluid.draw();
+	//blur.draw(0, 0);
+	*/
 
 	ofSetColor(255, 255, 255);
 	
@@ -198,7 +466,9 @@ void ofApp::draw(){
 		ofFill();
 
 	}
-	
+	if (showNoiseDebug) {
+		fboNoise.draw(0, 0);
+	}
 	gui.draw();
 }
 
@@ -308,6 +578,17 @@ void ofApp::setupControlPanel() {
 	// For an interesting experiment, try making Density proportional to the luminance of a photograph.
 	gui.add(scaleKinectPts.setup("scaleKinectPts", 1.0, 0.5, 7.0));
 
+	gui.add(bloomB.setup("Bloom", false));
+	gui.add(bloomIntensity.setup("bloomIntensity", 1.0, 0.0, 5.0));
+	
+	gui.add(blurB.setup("Blur", false));
+	gui.add(blurIntensity.setup("blurIntensity", 1.0, 0.0, 20.0));
+
+	gui.add(bokehB.setup("Bokeh", false));
+	gui.add(bokehIntensity.setup("bokehIntensity", 1.0, 0.0, 5.0));
+	
+
+	gui.add(showNoiseDebug.setup("showNoiseDebug", false));
 
 	gui.add(p1.setup("head", 0.0, -1.0, 1.0));
 	gui.add(p2.setup("leftHand", 0.0, -1.0, 1.0));
@@ -317,6 +598,15 @@ void ofApp::setupControlPanel() {
 	gui.add(p6.setup("scalar", 2.5, -1.0, 3.0));
 
 	jointDistance = 1.f;
+
+
+	gui.add(fluidity1.setup("fluidity 1", 2.3f, 0.001f, 5));
+	gui.add(fluidity2.setup("fluidity 2", 0.4f, 0.001f, 1));
+	gui.add(fluidity3.setup("fluidity 3", 3, 1, 16));
+	gui.add(speed.setup("speed", 0.00001f, 0.0f, 0.0028f));
+	gui.add(scale.setup("scale", 2000, 0, 40000.0f));
+	gui.add(delay.setup("delay", 400, 10, 400));
+	gui.add(autoSequence.setup("autoSequence",false));
 
 
 	

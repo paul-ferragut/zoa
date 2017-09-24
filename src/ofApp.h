@@ -8,8 +8,20 @@
 //#include "ofxVectorGraphics.h"    /* for PostScript output */
 
 //#include "ofxKinect.h"
+#include "ofxBloom.h"
+#include "ofxGaussianBlur.h"
 #include "ofxBlur.h"
+#include "ofxBokeh.h"
+#include "ofxGlow.h"
+#include "ofxInverse.h"
 #include "ofxKinectCommonBridge.h"
+
+#define EMPTY1 0
+#define LOGO1 1
+#define EMPTY2 2
+#define LOGO2 3
+#define EMPTY3 4
+#define LOGO3 5
 
 class ofApp : public ofBaseApp{
 
@@ -55,12 +67,28 @@ class ofApp : public ofBaseApp{
 		ofxFloatSlider LETTER_REPULSION;
 		ofxFloatSlider LETTER_ATTRACTION;
 
+
+		ofxIntSlider effects;
+
 		
 		ofxToggle debugKinect;
 		vector < ofPoint>kinectPts;
 		vector < ofPoint>kinectPtsPrev;
 
-		ofxBlur             blur;
+		ofxBloom    bloom;
+		ofxToggle bloomB;
+		ofxFloatSlider bloomIntensity;
+
+		ofxGaussianBlur gaussianBlur;
+		ofxToggle blurB;
+		ofxFloatSlider blurIntensity;
+		//ofxBlur     blur;
+		ofxBokeh    bokeh;
+		ofxToggle bokehB;
+		ofxFloatSlider bokehIntensity;
+		//ofxGlow     glow;
+
+		ofxBloom    inverse;
 
 		ofFbo fbo;
 		
@@ -77,4 +105,37 @@ class ofApp : public ofBaseApp{
 		//cout << scalePts << endl;
 		ofVec2f translatePts;
 
+		/*
+		ofColor lightColor;
+		float colorHue;
+		ofColor materialColor;
+		ofLight pointLight;
+		ofMaterial material;	ofVec3f center;
+		*/
+
+		ofShader shader;
+
+
+		ofImage brushImage;
+
+		ofFbo fboBg;
+		ofFbo maskFbo;
+
+		ofxFloatSlider fluidity1;
+		ofxFloatSlider fluidity2;
+		ofxFloatSlider fluidity3;
+		ofxFloatSlider speed;
+		ofxFloatSlider scale;
+		ofxFloatSlider resolutionMesh;
+
+		ofxToggle showNoiseDebug;
+
+		ofShader shaderNoise;
+		ofFbo fboNoise;
+
+		int counterTimer;
+		ofxIntSlider delay;
+		int timerLimit;
+		int sequence;
+		ofxToggle autoSequence;
 };

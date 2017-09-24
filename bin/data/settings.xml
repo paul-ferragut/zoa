@@ -22,12 +22,12 @@
 <LINEWIDTH>5.88</LINEWIDTH>
 <letter_repulsion>0.0945</letter_repulsion>
 	<letter_attraction>0.027</letter_attraction>
-	<scale_factor>10</scale_factor>
+	<scale_factor>6.13</scale_factor>
 <head>0</head>
 	<leftHand>0</leftHand>
 	<rightHand>0</rightHand>
 	<blobDensity>0.8</blobDensity>
 	<frequency>0.18</frequency>
 	<scalar>2.5</scalar>
-<scaleKinectPts>1.735</scaleKinectPts>
+<scaleKinectPts>0.76</scaleKinectPts>
 </group>

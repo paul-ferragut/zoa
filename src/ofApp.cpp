@@ -101,7 +101,7 @@ void ofApp::update(){
 		 // 10.0)*scaleFactor
 		//ofVec2f translatePts(0, (((ofGetHeight() / 2) - (480 / 2))/10)*scaleFactor);
 		//cout << scalePts << endl;
-		 translatePts.set(((1080 / 2)-((640 * scalePts) / 2) ),  ((1920 / 2)- ((480 * scalePts) / 2)) );
+		 translatePts.set( (((1080 / 10)*scaleFactor) / 2)-((640 * scalePts)/ 2) ,  (((1920 / 10)*scaleFactor) / 2)- ((480 * scalePts)/ 2) );
 		
 	if (kinect.isNewSkeleton()) {
 

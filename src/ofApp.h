@@ -16,12 +16,13 @@
 #include "ofxInverse.h"
 #include "ofxKinectCommonBridge.h"
 
+#include "ofxGpuLut.h"
+
 #define EMPTY1 0
 #define LOGO1 1
 #define EMPTY2 2
 #define LOGO2 3
-#define EMPTY3 4
-#define LOGO3 5
+
 
 class ofApp : public ofBaseApp{
 
@@ -138,4 +139,36 @@ class ofApp : public ofBaseApp{
 		int timerLimit;
 		int sequence;
 		ofxToggle autoSequence;
+		/*
+		void loadLUT(string path);
+		void applyLUT(ofPixelsRef pix);
+
+		bool doLUT;
+		ofVideoGrabber 		vidGrabber;
+	
+		ofPoint lutPos;
+		ofPoint thumbPos;
+
+		bool LUTloaded;
+		ofVec3f lut[32][32][32];
+
+		ofImage lutImg;
+	*/
+		bool showGui;
+
+		ofxGpuLut luts[9];
+		ofImage lutImg;
+		ofVideoGrabber video;
+		bool isThumbnailView;
+		int lutIndex;
+		string lutNames[9];
+		string description;
+		ofxIntSlider lutSelection;
+
+		ofxFloatSlider kinectForce;
+
+		int w;
+		int h;
+
+		ofxSVG svgA[2];
 };

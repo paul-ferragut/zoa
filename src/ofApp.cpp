@@ -3,6 +3,8 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 
+w = 1080;
+h = 1920;
 	//ofEnableDepthTest();
 	ofSetWindowTitle("ZOA");
 	ofBackground(0, 0, 0);
@@ -25,14 +27,14 @@ void ofApp::setup(){
 
 
 
-	for (int k = 0; k < 3; k++) {
+	for (int k = 0; k < 2; k++) {
 		vector<ofPolyline> outlines;
-		ofxSVG svg;
-		svg.load("zoa" + ofToString(k + 1) + ".svg");
+		//ofxSVG svg;
+		svgA[k].load("zoa" + ofToString(k + 1) + ".svg");
+	
 		
-		
-		for (int i = 0; i < svg.getNumPath(); i++) {
-			ofPath p = svg.getPathAt(i);
+		for (int i = 0; i < svgA[k].getNumPath(); i++) {
+			ofPath p = svgA[k].getPathAt(i);
 			// svg defaults to non zero winding which doesn't look so good as contours
 			p.setPolyWindingMode(OF_POLY_WINDING_ODD);//MATTERS
 			vector<ofPolyline>& lines = const_cast<vector<ofPolyline>&>(p.getOutline());
@@ -44,7 +46,7 @@ void ofApp::setup(){
 		fluid.addObstacles(outlines, k);
 	}
 	
-	for (int k = 0; k < 3; k++) {
+	for (int k = 0; k < 2; k++) {
 		vector<ofPolyline> outlines;
 		ofxSVG svg;
 		svg.load("zoai" + ofToString(k + 1) + ".svg");
@@ -60,16 +62,31 @@ void ofApp::setup(){
 			}
 		}
 		//	cout << "ADD OBSTACLES" << endl;
-		fluid.addObstacles(outlines, k+3);
+		fluid.addObstacles(outlines, k+2);
 	}
 	setupControlPanel();
 
-	fbo.allocate(ofGetWidth(), ofGetHeight(),GL_RGBA,4);
-	bloom.allocate(ofGetWidth(), ofGetHeight());
-	bokeh.allocate(ofGetWidth(), ofGetHeight());
-	gaussianBlur.allocate(ofGetWidth(), ofGetHeight());
-	inverse.allocate(ofGetWidth(), ofGetHeight());
+	fbo.allocate(w,h,GL_RGBA,4);
+	bloom.allocate(w, h);
+	bokeh.allocate(w, h);
+	gaussianBlur.allocate(w, h);
+//	inverse.allocate(ofGetWidth(), ofGetHeight());
+	
+	/*
+	dir.allowExt("cube");
+	dir.listDir("LUTs/");
+	dir.sort();
+	if (dir.size()>0) {
+		dirLoadIndex = 0;
+		loadLUT(dir.getPath(dirLoadIndex));
+		doLUT = true;
+	}
+	else {
+		doLUT = false;
+	}
 
+	lutImg.allocate(ofGetWidth(), ofGetHeight(), OF_IMAGE_COLOR);
+	*/
 
 	/*
 	pointLight.setDiffuseColor(ofColor(255.f, 255.f, 255.f));
@@ -90,10 +107,10 @@ void ofApp::setup(){
 	*/
 
 	shader.load("shader");
-	brushImage.loadImage("brush.png");
-	maskFbo.allocate(ofGetWidth(), ofGetHeight());
-	fboBg.allocate(ofGetWidth(), ofGetHeight());
-	fboNoise.allocate(ofGetWidth()/2, ofGetHeight()/2);
+//	brushImage.loadImage("brush.png");
+	maskFbo.allocate(w, h);
+	fboBg.allocate(w, h);
+	fboNoise.allocate(w/2, h/2);
 
 	maskFbo.begin();
 	ofClear(0, 0, 0, 255);
@@ -106,6 +123,28 @@ void ofApp::setup(){
 	sequence = 0;
 	timerLimit = 0;
 	shaderNoise.load("noise");
+
+
+	luts[0].load("default.png");
+	luts[1].load("1977.png");
+	luts[2].load("amaro.png");
+	luts[3].load("gotham.png");
+	luts[4].load("lo-fi.png");
+	luts[5].load("nashville.png");
+	luts[6].load("sutro.png");
+	luts[7].load("willow.png");
+	luts[8].load("X-ProII.png");
+
+	lutNames[0] = "default";
+	lutNames[1] = "1977";
+	lutNames[2] = "amaro";
+	lutNames[3] = "gotham";
+	lutNames[4] = "lo-fi";
+	lutNames[5] = "nashville";
+	lutNames[6] = "sutro";
+	lutNames[7] = "willow";
+	lutNames[8] = "X-Pro II";
+	lutIndex = 0;
 }
 
 //--------------------------------------------------------------
@@ -130,6 +169,7 @@ void ofApp::update(){
 	fluid.gravity = GRAVITY;
 	fluid.smoothing = SMOOTHING;
 	fluid.lineWidth = LINEWIDTH;
+	fluid.kinectF = kinectForce;
 
 	fluid.letterAttract = LETTER_ATTRACTION;
 	fluid.letterRepel = LETTER_REPULSION;
@@ -203,13 +243,17 @@ void ofApp::update(){
 		bloom << fbo.getTexture();
 		//bloom.setPasses(bloomIntensity);
 		bloom.update();
+
+
+		//lut << bloom;
+		//lut.update();
 	}
 
 	if (bokehB) {
 		bokeh.setRadius(bokehIntensity);
 		
 		if (bloomB) {
-			bokeh << bloom;
+			bokeh << bloom;//<< lut;
 		}
 		else {
 		bokeh << fbo.getTexture();
@@ -222,6 +266,8 @@ void ofApp::update(){
 		gaussianBlur << bokeh;
 		gaussianBlur.update();
 	}
+
+
 
 
 
@@ -265,7 +311,7 @@ void ofApp::update(){
 		if (ofGetFrameNum() - counterTimer >= timerLimit) {
 			sequence++;
 			//cout << "SEQUENCE" << sequence << endl;
-			if (sequence > 5) {
+			if (sequence > 3) {
 				sequence = 0;
 			}
 			counterTimer = ofGetFrameNum();
@@ -274,28 +320,22 @@ void ofApp::update(){
 			DO_OBSTACLES[2] = false;
 			switch (sequence){
 			case EMPTY1:
-				timerLimit = ofRandom(delay * 5, delay * 7);
+				timerLimit = ofRandom(delay * 7, delay * 10);
 				break;
 			case EMPTY2:
-				timerLimit = ofRandom(delay *0.4, delay *0.6);
+				timerLimit = ofRandom(delay *0.6, delay *0.86);
 				break;
-			case EMPTY3:
-				timerLimit = ofRandom(delay *0.2, delay *0.3);
-				break;
+	
 			case LOGO1:
 				//GRAVITY = 0.0028;
-				timerLimit = ofRandom(delay * 2, delay * 6);
+				timerLimit = ofRandom(delay *10, delay * 14);
 				DO_OBSTACLES[0] = true;
 				break;
 			case LOGO2:
-				timerLimit = ofRandom(delay * 1, delay * 1.5);
+				timerLimit = ofRandom(delay * 7, delay * 10);
 				DO_OBSTACLES[1] = true;
 				break;
-			case LOGO3:
-				timerLimit = ofRandom(delay * 9, delay *12);
-				DO_OBSTACLES[2] = true;
-				break;
-			
+	
 			}
 		
 		}
@@ -308,6 +348,20 @@ void ofApp::update(){
 	if (sequence == EMPTY1) {
 		//GRAVITY = GRAVITY+cos(ofGetElapsedTimeMillis()*0.0001)*0.002;//GET RESET ABOVE TO 0.0028
 	}
+
+	/*
+
+	if (doLUT) {
+		//fbo.getTexture().getTextureData();
+		fbo.readToPixels(lutImg.getPixelsRef());
+		lutImg.update();
+	
+		applyLUT(lutImg.getPixels());
+		//}
+	}
+	*/
+
+
 }
 
 //--------------------------------------------------------------
@@ -373,7 +427,7 @@ void ofApp::draw(){
 	ofSetColor(0, 0, 0);
 	ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
 	ofSetColor(255, 5);
-	fboNoise.draw(0,0, ofGetWidth(), ofGetHeight());
+	fboNoise.draw(0,0, w, h);
 	ofSetColor(255,255);
 //	ofClearAlpha();
 	fluid.draw();
@@ -410,20 +464,31 @@ void ofApp::draw(){
 	shader.end();
 	fboBg.end();
 
-
+	if (lutSelection != 9) {
+	luts[lutSelection].begin();}
 	
 	//
 	if (bloomB) {
 		bloom.draw();
+		//lut.draw();
 	}
 	else {
 		fbo.draw(0,0);
 	}
 
+	if (DO_OBSTACLES[0]) {
+			svgA[0].draw();
+		}
 
+		if (DO_OBSTACLES[1]) {
+			svgA[1].draw();
+		}
 
 		fboBg.draw(0,0);
 
+	//	ofSetColor(255, 255, 255, 100);
+	
+		ofSetColor(255,255, 255, 255);
 	/*
 	ofDisableDepthTest();
 	if (bloomB) {
@@ -446,7 +511,15 @@ void ofApp::draw(){
 //	fluid.draw();
 	//blur.draw(0, 0);
 	*/
+	
 
+//	fbo.draw(0, 0, 1920, 1080);
+		if (lutSelection != 9) {
+			luts[lutSelection].end();
+		}
+
+
+		if (showGui) {
 	ofSetColor(255, 255, 255);
 	
 	
@@ -469,7 +542,13 @@ void ofApp::draw(){
 	if (showNoiseDebug) {
 		fboNoise.draw(0, 0);
 	}
+
+
+	//lutImg.draw(0,0);
+
+
 	gui.draw();
+		}
 }
 
 //--------------------------------------------------------------
@@ -478,6 +557,11 @@ void ofApp::keyPressed(int key){
 		bFullscreen = !bFullscreen;
 		ofSetFullscreen(bFullscreen);
 
+	}
+
+	if (key == 'g') { // fullscreen
+		showGui = !showGui;
+		
 	}
 	else if (key == 'h') { // help
 		bShowControlPanel = !bShowControlPanel;
@@ -490,6 +574,32 @@ void ofApp::keyPressed(int key){
 			ofShowCursor();
 		}
 	}
+
+	switch (key) {
+	case ' ':
+		isThumbnailView = !isThumbnailView;
+		break;
+
+	case OF_KEY_RIGHT:
+		if (!isThumbnailView) {
+			lutIndex++;
+			lutIndex %= 9;
+		}
+		break;
+
+	case OF_KEY_LEFT:
+		if (!isThumbnailView) {
+			lutIndex--;
+			if (lutIndex < 0) {
+				lutIndex = 8;
+			}
+		}
+		break;
+
+	default:
+		break;
+	}
+
 }
 
 //--------------------------------------------------------------
@@ -607,8 +717,8 @@ void ofApp::setupControlPanel() {
 	gui.add(scale.setup("scale", 2000, 0, 40000.0f));
 	gui.add(delay.setup("delay", 400, 10, 400));
 	gui.add(autoSequence.setup("autoSequence",false));
-
-
+	gui.add(lutSelection.setup("lutSelection", 0, 0, 9));
+	gui.add(kinectForce.setup("kinectForce", 1.0, 0.0, 1.0));
 	
 	gui.loadFromFile("settings.xml");
 }
@@ -622,3 +732,61 @@ void ofApp::exit() {
 
 	
 }
+
+/*
+//--------------------------------------------------------------
+void ofApp::loadLUT(string path) {
+	LUTloaded = false;
+
+	ofFile file(path);
+	string line;
+	for (int i = 0; i < 5; i++) {
+		getline(file, line);
+		ofLog() << "Skipped line: " << line;
+	}
+	for (int z = 0; z<32; z++) {
+		for (int y = 0; y<32; y++) {
+			for (int x = 0; x<32; x++) {
+				ofVec3f cur;
+				file >> cur.x >> cur.y >> cur.z;
+				lut[x][y][z] = cur;
+			}
+		}
+	}
+
+	LUTloaded = true;
+}
+//--------------------------------------------------------------
+void ofApp::applyLUT(ofPixelsRef pix) {
+	if (LUTloaded) {
+
+		for (int y = 0; y < pix.getHeight(); y++) {
+			for (int x = 0; x < pix.getWidth(); x++) {
+
+				ofColor color = pix.getColor(x, y);
+
+				int lutPos[3];
+				for (int m = 0; m<3; m++) {
+					lutPos[m] = color[m] / 8;
+					if (lutPos[m] == 31) {
+						lutPos[m] = 30;
+					}
+				}
+
+				ofVec3f start = lut[lutPos[0]][lutPos[1]][lutPos[2]];
+				ofVec3f end = lut[lutPos[0] + 1][lutPos[1] + 1][lutPos[2] + 1];
+
+				for (int k = 0; k<3; k++) {
+					float amount = (color[k] % 8) / 8.0f;
+					color[k] = (start[k] + amount * (end[k] - start[k])) * 255;
+				}
+
+				lutImg.setColor(x, y, color);
+
+			}
+		}
+
+		lutImg.update();
+	}
+}
+*/

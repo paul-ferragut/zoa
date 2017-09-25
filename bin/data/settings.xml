@@ -1,16 +1,16 @@
 <group>
-	<Particles>43570</Particles>
-	<Density>4.65</Density>
-	<Stiffness>0.45</Stiffness>
+	<Particles>45550</Particles>
+	<Density>2.55</Density>
+	<Stiffness>0.28</Stiffness>
 	<Bulk_Viscosity>3.1</Bulk_Viscosity>
 	<Elasticity>1.18</Elasticity>
 	<Viscosity>1.16</Viscosity>
-	<Yield_Rate>1</Yield_Rate>
-	<Gravity>0.0028</Gravity>
-	<Smoothing>0.6</Smoothing>
+	<Yield_Rate>0.51</Yield_Rate>
+	<Gravity>0.0029</Gravity>
+	<Smoothing>1.005</Smoothing>
 	<Do_Obstacles1>0</Do_Obstacles1>
 	<Do_Obstacles2>0</Do_Obstacles2>
-	<Do_Obstacles3>1</Do_Obstacles3>
+	<Do_Obstacles3>0</Do_Obstacles3>
 	<Horizontal_Density_Gradient>1</Horizontal_Density_Gradient>
 	<Vertical_Sync>0</Vertical_Sync>
 	<debugKinect>0</debugKinect>
@@ -19,10 +19,10 @@
 	<blobSize1>6000</blobSize1>
 	<blobSize2>15000</blobSize2>
 <group/>
-<LINEWIDTH>1.225</LINEWIDTH>
-<letter_repulsion>0.0945</letter_repulsion>
-	<letter_attraction>0.027</letter_attraction>
-	<scale_factor>6.535</scale_factor>
+<LINEWIDTH>2.17</LINEWIDTH>
+<letter_repulsion>0.129</letter_repulsion>
+	<letter_attraction>0.051</letter_attraction>
+	<scale_factor>10</scale_factor>
 <head>0</head>
 	<leftHand>0</leftHand>
 	<rightHand>0</rightHand>
@@ -31,11 +31,11 @@
 	<scalar>2.5</scalar>
 <scaleKinectPts>1.215</scaleKinectPts>
 <Bloom>0</Bloom>
-	<bloomIntensity>5</bloomIntensity>
+	<bloomIntensity>0</bloomIntensity>
 	<Blur>1</Blur>
-	<blurIntensity>3.9</blurIntensity>
+	<blurIntensity>5.1</blurIntensity>
 	<Bokeh>1</Bokeh>
-	<bokehIntensity>1.6</bokehIntensity>
+	<bokehIntensity>3.725</bokehIntensity>
 <Complexity1>1.17577</Complexity1>
 	<Complexity2>0.235765</Complexity2>
 	<Complexity3>4.075</Complexity3>
@@ -44,9 +44,11 @@
 <fluidity_1>3.37532</fluidity_1>
 	<fluidity_2>0.125875</fluidity_2>
 	<fluidity_3>2.275</fluidity_3>
-	<speed>0.001694</speed>
-	<scale>1200</scale>
+	<speed>0.0028</speed>
+	<scale>4000</scale>
 <showNoiseDebug>0</showNoiseDebug>
 <delay>29</delay>
 	<autoSequence>1</autoSequence>
+<lutSelection>6</lutSelection>
+<kinectForce>0.655</kinectForce>
 </group>

@@ -99,7 +99,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxAutoReloadedShader\src;..\..\..\addons\ofxFX\src;..\..\..\addons\ofxFX\src\composers;..\..\..\addons\ofxFX\src\filters;..\..\..\addons\ofxFX\src\generative;..\..\..\addons\ofxFX\src\operations;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxKinectCommonBridge\libs;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\include;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs64;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs64_Speech;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs_Speech;..\..\..\addons\ofxKinectCommonBridge\src;..\..\..\addons\ofxMPMFluid\src;..\..\..\addons\ofxSvg\libs;..\..\..\addons\ofxSvg\libs\svgTiny;..\..\..\addons\ofxSvg\libs\svgTiny\src;..\..\..\addons\ofxSvg\src;..\..\..\addons\ofxXmlSettings\libs;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxGpuLut\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxAutoReloadedShader\src;..\..\..\addons\ofxFX\src;..\..\..\addons\ofxFX\src\composers;..\..\..\addons\ofxFX\src\filters;..\..\..\addons\ofxFX\src\generative;..\..\..\addons\ofxFX\src\operations;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxKinectCommonBridge\libs;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\include;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs64;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs64_Speech;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs_Speech;..\..\..\addons\ofxKinectCommonBridge\src;..\..\..\addons\ofxSvg\libs;..\..\..\addons\ofxSvg\libs\svgTiny;..\..\..\addons\ofxSvg\libs\svgTiny\src;..\..\..\addons\ofxSvg\src;..\..\..\addons\ofxXmlSettings\libs;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxGpuLut\src</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -122,7 +122,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxAutoReloadedShader\src;..\..\..\addons\ofxFX\src;..\..\..\addons\ofxFX\src\composers;..\..\..\addons\ofxFX\src\filters;..\..\..\addons\ofxFX\src\generative;..\..\..\addons\ofxFX\src\operations;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxKinectCommonBridge\libs;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\include;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs64;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs64_Speech;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs_Speech;..\..\..\addons\ofxKinectCommonBridge\src;..\..\..\addons\ofxMPMFluid\src;..\..\..\addons\ofxSvg\libs;..\..\..\addons\ofxSvg\libs\svgTiny;..\..\..\addons\ofxSvg\libs\svgTiny\src;..\..\..\addons\ofxSvg\src;..\..\..\addons\ofxXmlSettings\libs;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxGpuLut\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxAutoReloadedShader\src;..\..\..\addons\ofxFX\src;..\..\..\addons\ofxFX\src\composers;..\..\..\addons\ofxFX\src\filters;..\..\..\addons\ofxFX\src\generative;..\..\..\addons\ofxFX\src\operations;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxKinectCommonBridge\libs;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\include;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs64;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs64_Speech;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs_Speech;..\..\..\addons\ofxKinectCommonBridge\src;..\..\..\addons\ofxSvg\libs;..\..\..\addons\ofxSvg\libs\svgTiny;..\..\..\addons\ofxSvg\libs\svgTiny\src;..\..\..\addons\ofxSvg\src;..\..\..\addons\ofxXmlSettings\libs;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxGpuLut\src</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -145,7 +145,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxAutoReloadedShader\src;..\..\..\addons\ofxFX\src;..\..\..\addons\ofxFX\src\composers;..\..\..\addons\ofxFX\src\filters;..\..\..\addons\ofxFX\src\generative;..\..\..\addons\ofxFX\src\operations;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxKinectCommonBridge\libs;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\include;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs64;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs64_Speech;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs_Speech;..\..\..\addons\ofxKinectCommonBridge\src;..\..\..\addons\ofxMPMFluid\src;..\..\..\addons\ofxSvg\libs;..\..\..\addons\ofxSvg\libs\svgTiny;..\..\..\addons\ofxSvg\libs\svgTiny\src;..\..\..\addons\ofxSvg\src;..\..\..\addons\ofxXmlSettings\libs;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxGpuLut\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxAutoReloadedShader\src;..\..\..\addons\ofxFX\src;..\..\..\addons\ofxFX\src\composers;..\..\..\addons\ofxFX\src\filters;..\..\..\addons\ofxFX\src\generative;..\..\..\addons\ofxFX\src\operations;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxKinectCommonBridge\libs;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\include;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs64;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs64_Speech;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs_Speech;..\..\..\addons\ofxKinectCommonBridge\src;..\..\..\addons\ofxSvg\libs;..\..\..\addons\ofxSvg\libs\svgTiny;..\..\..\addons\ofxSvg\libs\svgTiny\src;..\..\..\addons\ofxSvg\src;..\..\..\addons\ofxXmlSettings\libs;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxGpuLut\src</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -171,7 +171,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxAutoReloadedShader\src;..\..\..\addons\ofxFX\src;..\..\..\addons\ofxFX\src\composers;..\..\..\addons\ofxFX\src\filters;..\..\..\addons\ofxFX\src\generative;..\..\..\addons\ofxFX\src\operations;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxKinectCommonBridge\libs;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\include;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs64;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs64_Speech;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs_Speech;..\..\..\addons\ofxKinectCommonBridge\src;..\..\..\addons\ofxMPMFluid\src;..\..\..\addons\ofxSvg\libs;..\..\..\addons\ofxSvg\libs\svgTiny;..\..\..\addons\ofxSvg\libs\svgTiny\src;..\..\..\addons\ofxSvg\src;..\..\..\addons\ofxXmlSettings\libs;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxGpuLut\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxAutoReloadedShader\src;..\..\..\addons\ofxFX\src;..\..\..\addons\ofxFX\src\composers;..\..\..\addons\ofxFX\src\filters;..\..\..\addons\ofxFX\src\generative;..\..\..\addons\ofxFX\src\operations;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxKinectCommonBridge\libs;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\include;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs64;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs64_Speech;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\windows\vs_Speech;..\..\..\addons\ofxKinectCommonBridge\src;..\..\..\addons\ofxSvg\libs;..\..\..\addons\ofxSvg\libs\svgTiny;..\..\..\addons\ofxSvg\libs\svgTiny\src;..\..\..\addons\ofxSvg\src;..\..\..\addons\ofxXmlSettings\libs;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxGpuLut\src</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -205,11 +205,6 @@
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.cpp" />
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxToggle.cpp" />
     <ClCompile Include="..\..\..\addons\ofxKinectCommonBridge\src\ofxKinectCommonBridge.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxMPMFluid\src\ofxMPMFluid.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxMPMFluid\src\ofxMPMNode.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxMPMFluid\src\ofxMPMObstacle.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxMPMFluid\src\ofxMPMObstacle2.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxMPMFluid\src\ofxMPMParticle.cpp" />
     <ClCompile Include="..\..\..\addons\ofxSvg\src\ofxSvg.cpp" />
     <ClCompile Include="..\..\..\addons\ofxSvg\libs\svgTiny\src\src_colors.cpp" />
     <ClCompile Include="..\..\..\addons\ofxSvg\libs\svgTiny\src\svgtiny.cpp" />
@@ -219,6 +214,11 @@
     <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.cpp" />
     <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlerror.cpp" />
     <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlparser.cpp" />
+    <ClCompile Include="src\ofxMPMFluid.cpp" />
+    <ClCompile Include="src\ofxMPMNode.cpp" />
+    <ClCompile Include="src\ofxMPMObstacle.cpp" />
+    <ClCompile Include="src\ofxMPMObstacle2.cpp" />
+    <ClCompile Include="src\ofxMPMParticle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\addons\ofxGpuLut\src\ofxGpuLut.h" />
@@ -270,16 +270,16 @@
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxToggle.h" />
     <ClInclude Include="..\..\..\addons\ofxKinectCommonBridge\src\ofxKinectCommonBridge.h" />
     <ClInclude Include="..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\include\KinectCommonBridgeLib.h" />
-    <ClInclude Include="..\..\..\addons\ofxMPMFluid\src\ofxMPMFluid.h" />
-    <ClInclude Include="..\..\..\addons\ofxMPMFluid\src\ofxMPMNode.h" />
-    <ClInclude Include="..\..\..\addons\ofxMPMFluid\src\ofxMPMObstacle.h" />
-    <ClInclude Include="..\..\..\addons\ofxMPMFluid\src\ofxMPMObstacle2.h" />
-    <ClInclude Include="..\..\..\addons\ofxMPMFluid\src\ofxMPMParticle.h" />
     <ClInclude Include="..\..\..\addons\ofxSvg\src\ofxSvg.h" />
     <ClInclude Include="..\..\..\addons\ofxSvg\libs\svgTiny\src\svgtiny.h" />
     <ClInclude Include="..\..\..\addons\ofxSvg\libs\svgTiny\src\svgtiny_internal.h" />
     <ClInclude Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h" />
     <ClInclude Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.h" />
+    <ClInclude Include="src\ofxMPMFluid.h" />
+    <ClInclude Include="src\ofxMPMNode.h" />
+    <ClInclude Include="src\ofxMPMObstacle.h" />
+    <ClInclude Include="src\ofxMPMObstacle2.h" />
+    <ClInclude Include="src\ofxMPMParticle.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
